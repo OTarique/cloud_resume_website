@@ -26,7 +26,7 @@ All resources were deployed using Terraform.
 
 I did not develop the frontend of the website but rather used this rather simple and elegant [template](https://tympanus.net/codrops/2018/01/12/freebie-scribbler-website-template-html-sketch/) and modified certain parts of it to my liking. 
 
-Any website template can work but the cloud resume website is to serve as a condensed form of my full resume. Hence I prefered a short and simple website to showcase my skills and hope it wil
+Any website template can work but the cloud resume website is to serve as a condensed form of my full resume. Hence I prefered a short and simple website to showcase my important skills and experiences.
 
 ## 2. Website deployment
 
@@ -54,19 +54,19 @@ Below are the steps followed to deploy the website:
 
 ## 3. Github actions
 
-With the website up and running over HTTPS, we need to setup some automation with regards to our website files. 
+With the website up and running over HTTPS, we need to setup some automation with regards to our website files.
 
 ### 3.1 Upload to S3 bucket
-We do not want to have to manually upload our website files to S3 bucket everytime there is an edit. This can be automated using Github actions such that whenever there is an edit to the website files and pushed to the repo, it will automatically push the file(s) to the S3 bucket.
+We do not want to have to manually upload our website files to S3 bucket everytime there is an edit. This can be automated using Github actions such that whenever there is an edit to the website files and pushed to the repo, it will automatically push the file(s) to the S3 bucket and all changes will be immediately live.
 
-The steps outlined on [this page](https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/) outlines how to configure an OpenID Connect (OIDC) identity provider (IdP) inside an AWS account so that we can use IAM roles and short-term credentials, which removes the need for IAM user access keys.Short-term credentials are preferred as it reduces the overal risk compared to long-lived credentials.
+The steps outlined on [this page](https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/) outlines how to configure an OpenID Connect (OIDC) identity provider (IdP) inside an AWS account so that we can use IAM roles and short-term credentials, which removes the need for IAM user access keys. Short-term credentials are preferred as it reduces the overal risk compared to long-lived credentials.
 
 The configuration consists of:
 - Creating an OIDC providers using GitHub cert fingerprint
 - Attaching a role to the provider that is restricted to the repo and allows access to the AWS account
 - Attach a permission set to the role to perform the necessary action i.e. in this case, allow actions to be the performed on the S3 subdomain bucket.
 
-After configurations is complete, we need create a workflow file that will be used by GitHub actions to authenticate inot the AWS account and performing the necessary action defined in the workflow. In this case, it will be a simple [sync function](https://blog.awsfundamentals.com/aws-s3-sync) that syncs the repo files with the S3 bucket.
+After configurations is complete, we need create a workflow file that will be used by GitHub actions to authenticate with the AWS account and perform the necessary action defined in the workflow. In this case, it will be a simple [sync function](https://blog.awsfundamentals.com/aws-s3-sync) that syncs the repo files with the S3 bucket.
 
 ### 3.2 Cypress
 
